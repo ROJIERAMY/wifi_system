@@ -42,3 +42,12 @@ Optional: use the included `render.yaml` via **New** → **Blueprint** → selec
 **GitHub does not run Python web apps.** It only holds the code. Your public URL always comes from a host like Render.
 
 **Auto-deploy when you push:** After Render is set up, open Render → your service → **Deploy** → **Deploy Hook**, copy the URL. In GitHub: **Settings → Secrets and variables → Actions → New repository secret** → name `RENDER_DEPLOY_HOOK_URL`, paste the URL. Then each `git push` to `main` runs `.github/workflows/deploy-render.yml` and triggers a new deploy.
+
+### GitHub Pages (static page only)
+
+[GitHub Pages](https://pages.github.com/) serves the files in `docs/` — **not** the Python app. After you enable it, you get a project site like `https://rojieramy.github.io/wifi_system/` with a short info page.
+
+1. Repo **Settings → Pages** → **Build and deployment**: Branch **main**, folder **/docs** → Save.  
+2. Wait a minute; the site URL appears on the same page.
+
+Edit `docs/index.html` to paste your real **Render** link as the main button when you have it.

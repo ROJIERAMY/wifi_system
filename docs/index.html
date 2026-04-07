@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WiFi café cards</title>
+  <style>
+    :root { --bg:#0f1419; --card:#1a2332; --text:#e7edf5; --muted:#8b9cb3; --a:#3d9cf5; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 2rem 1rem; }
+    .box { max-width: 560px; margin: 0 auto; background: var(--card); border: 1px solid #2d3a4d; border-radius: 16px; padding: 2rem; }
+    h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    p { color: var(--muted); margin: 0 0 1rem; }
+    a { color: var(--a); }
+    .btn { display: inline-block; margin-top: 0.5rem; padding: 0.65rem 1.2rem; background: var(--a); color: #fff !important; text-decoration: none !important; border-radius: 10px; font-weight: 600; }
+    .btn:hover { filter: brightness(1.08); }
+    code { background: #0d1218; padding: 0.15rem 0.4rem; border-radius: 6px; font-size: 0.9em; }
+    ul { color: var(--muted); padding-left: 1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>WiFi café cards</h1>
+    <p>Small web tool to print Wi‑Fi login codes with time limits. The <strong>working admin app</strong> is a Python server — it does not run on GitHub Pages. Host it on Render (or your own PC) and open that link.</p>
+    <p><strong>Source code:</strong> <a href="https://github.com/ROJIERAMY/wifi_system">github.com/ROJIERAMY/wifi_system</a></p>
+    <p><strong>Live app (set your URL):</strong> replace the link below after you deploy on Render.</p>
+    <p><a class="btn" href="https://render.com">Deploy on Render →</a></p>
+    <p style="margin-top:1.5rem;font-size:0.9rem;">To show <em>this</em> page at <code>rojieramy.github.io/wifi_system/</code>: GitHub repo → <strong>Settings → Pages</strong> → Build from branch <code>main</code>, folder <code>/docs</code> → Save.</p>
+  </div>
+</body>
+</html>
