@@ -1,0 +1,27 @@
+# GitHub only stores code. Your app runs on Render (or similar). This workflow tells Render to pull and rebuild when you push to main.
+#
+# Setup once:
+# 1) Create a Web Service on https://render.com from this repo (see README).
+# 2) Render → your service → Deploy → Deploy Hook → copy URL.
+# 3) GitHub → repo → Settings → Secrets and variables → Actions → New repository secret
+#    Name: RENDER_DEPLOY_HOOK_URL   Value: (paste hook URL)
+name: Trigger Render deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger production deploy on Render
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "Optional: add secret RENDER_DEPLOY_HOOK_URL to auto-deploy after each push."
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK"
+          echo "Deploy triggered."

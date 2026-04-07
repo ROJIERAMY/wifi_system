@@ -36,3 +36,9 @@ GitHub does **not** run the app. Use a host such as [Render](https://render.com)
 Free instances **sleep after ~15 minutes** of no traffic; the first visit may take ~30–60s to wake up.
 
 Optional: use the included `render.yaml` via **New** → **Blueprint** → select this repo (you may need to fill in `HOTSPOT_ADMIN_PASSWORD` when prompted).
+
+### GitHub vs “live site”
+
+**GitHub does not run Python web apps.** It only holds the code. Your public URL always comes from a host like Render.
+
+**Auto-deploy when you push:** After Render is set up, open Render → your service → **Deploy** → **Deploy Hook**, copy the URL. In GitHub: **Settings → Secrets and variables → Actions → New repository secret** → name `RENDER_DEPLOY_HOOK_URL`, paste the URL. Then each `git push` to `main` runs `.github/workflows/deploy-render.yml` and triggers a new deploy.
