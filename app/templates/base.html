@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}WiFi cards{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    {% if show_nav | default(true) %}
+    <header class="top simple-top">
+      <div class="brand">WiFi café cards</div>
+      <nav class="nav">
+        <a href="/">Make cards</a>
+        <a href="/settings">Router</a>
+        <a href="/logout">Out</a>
+      </nav>
+    </header>
+    {% endif %}
+    {% block body %}{% endblock %}
+  </div>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

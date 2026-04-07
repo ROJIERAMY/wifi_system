@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Router{% endblock %}
+{% block body %}
+<div class="card easy-card">
+  <h1 class="hero-title">Wi‑Fi router (optional)</h1>
+  <p class="lead">Only needed if you want this app to add the cards to your MikroTik automatically. You can still use the app to <strong>create and print</strong> cards without this.</p>
+
+  {% if msg %}
+  <div class="flash flash-ok">{{ msg }}</div>
+  {% endif %}
+
+  <form method="post" action="/settings" class="stack">
+    <label for="host">Router address (example: 192.168.88.1)</label>
+    <input class="big-input" type="text" id="host" name="host" value="{{ settings.host }}" required />
+
+    <label for="port">API port (usually 8728)</label>
+    <input class="big-input narrow" type="number" id="port" name="port" value="{{ settings.port }}" />
+
+    <label for="username">Router login</label>
+    <input class="big-input" type="text" id="username" name="username" value="{{ settings.username }}" autocomplete="username" />
+
+    <label for="password">Router password</label>
+    <input class="big-input" type="password" id="password" name="password" value="{{ settings.password }}" autocomplete="current-password" />
+
+    <label class="check-line">
+      <input type="checkbox" name="use_plaintext_login" {% if settings.use_plaintext_login %}checked{% endif %} />
+      New-style login (most routers)
+    </label>
+
+    <label class="check-line">
+      <input type="checkbox" name="api_enabled" {% if settings.api_enabled %}checked{% endif %} />
+      Allow sending cards from this app
+    </label>
+
+    <div class="row-inline">
+      <button type="submit" class="btn-huge secondary">Save</button>
+    </div>
+  </form>
+
+  <form method="post" action="/settings/test" class="stack" style="margin-top:1rem">
+    <button type="submit" class="btn-secondary">Test connection</button>
+  </form>
+
+  <p class="muted big-muted" style="margin-top:1.5rem">On the router: enable <strong>API</strong> under IP → Services. Hotspot must already be set up there.</p>
+</div>
+{% endblock %}

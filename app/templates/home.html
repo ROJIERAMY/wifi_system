@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Make WiFi cards{% endblock %}
+{% block body %}
+
+{% if err %}
+<div class="flash flash-bad">{{ err }}</div>
+{% endif %}
+{% if msg %}
+<div class="flash flash-ok">{{ msg }}</div>
+{% endif %}
+
+<section class="card easy-card hero">
+  <h1 class="hero-title">New cards</h1>
+  <p class="lead">Pick how long each card works, then how many to print.</p>
+
+  <form method="post" action="/create" class="stack">
+    <p class="label-big">Time per card</p>
+    <div class="preset-grid">
+      {% for p in profiles %}
+      <label class="preset">
+        <input type="radio" name="profile_id" value="{{ p.id }}" {% if loop.first %}checked{% endif %} />
+        <span class="preset-box">
+          <span class="preset-name">{{ p.name }}</span>
+          <span class="preset-sub">{{ p.duration_seconds | format_duration }}</span>
+        </span>
+      </label>
+      {% endfor %}
+    </div>
+
+    <div class="row-inline">
+      <div>
+        <label for="count">How many cards?</label>
+        <input type="number" id="count" name="count" value="5" min="1" max="200" class="big-input narrow" />
+      </div>
+      <button type="submit" class="btn-huge">Create cards</button>
+    </div>
+  </form>
+</section>
+
+<section class="card easy-card">
+  <div class="row-between">
+    <h2 class="section-title">Your cards</h2>
+    <div class="btn-row">
+      <form method="post" action="/sync" style="display:inline">
+        <button type="submit" class="btn-secondary" {% if not router_ready %}title="Set up router first"{% endif %}>Send new cards to router</button>
+      </form>
+      <a class="btn-secondary" href="/export.csv">Download spreadsheet</a>
+    </div>
+  </div>
+  {% if pending_count %}
+  <p class="hint-bar">{{ pending_count }} card(s) not on the router yet — use <strong>Send to router</strong> after you set up Settings.</p>
+  {% endif %}
+
+  {% if not vouchers %}
+  <p class="muted big-muted">No cards yet. Choose a time above and press <strong>Create cards</strong>.</p>
+  {% else %}
+  <div class="table-wrap">
+    <table class="easy-table">
+      <thead>
+        <tr>
+          <th>Login</th>
+          <th>Password</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in vouchers %}
+        {% set p = prof_map.get(v.profile_id) %}
+        <tr>
+          <td><code class="copy-target">{{ v.username }}</code> <button type="button" class="btn-copy" data-copy="{{ v.username }}">Copy</button></td>
+          <td><code class="copy-target">{{ v.password }}</code> <button type="button" class="btn-copy" data-copy="{{ v.password }}">Copy</button></td>
+          <td>{{ p.name if p else "—" }}</td>
+          <td>
+            {% if v.status == 'on_router' %}<span class="pill ok">On router</span>
+            {% elif v.status == 'revoked' %}<span class="pill bad">Off</span>
+            {% else %}<span class="pill wait">Ready</span>{% endif %}
+          </td>
+          <td>
+            <form method="post" action="/revoke/{{ v.id }}" onsubmit="return confirm('Turn off this card?');">
+              <button type="submit" class="link-danger">Turn off</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.querySelectorAll(".btn-copy").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    var t = btn.getAttribute("data-copy");
+    navigator.clipboard.writeText(t).then(function() {
+      btn.textContent = "Copied!";
+      setTimeout(function() { btn.textContent = "Copy"; }, 1200);
+    });
+  });
+});
+</script>
+{% endblock %}
